@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Playfair+Display:ital,wght@1,400;1,500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 140 8% 58%;
+    --foreground: 0 0% 100%;
+
+    --card: 140 8% 75%;
+    --card-foreground: 0 0% 20%;
+
+    --popover: 140 8% 75%;
+    --popover-foreground: 0 0% 20%;
+
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 20%;
+
+    --secondary: 140 8% 68%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 140 8% 72%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 142 70% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 140 8% 70%;
+    --input: 140 8% 70%;
+    --ring: 0 0% 100%;
+
+    --radius: 2rem;
+
+    /* Custom colors for EV theme */
+    --ev-gray-light: 140 6% 82%;
+    --ev-gray-medium: 140 6% 70%;
+    --ev-gray-dark: 140 8% 58%;
+    --ev-green: 142 70% 45%;
+    --ev-green-light: 142 60% 55%;
+    --ev-text-white: 0 0% 100%;
+    --ev-text-muted: 0 0% 85%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-inter antialiased;
+  }
+}
+
+@layer components {
+  .gradient-text {
+    background: linear-gradient(
+      180deg,
+      hsl(0 0% 100% / 0.85) 0%,
+      hsl(0 0% 100% / 0.7) 30%,
+      hsl(0 0% 90% / 0.5) 60%,
+      hsl(140 5% 70% / 0.25) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 4px 40px hsl(0 0% 100% / 0.15));
+  }
+
+  .hero-bg {
+    background: linear-gradient(
+      135deg,
+      hsl(140 12% 62%) 0%,
+      hsl(140 10% 58%) 50%,
+      hsl(145 14% 55%) 100%
+    );
+  }
+
+  .nav-link {
+    @apply text-foreground/90 hover:text-foreground transition-colors duration-200 text-sm tracking-wider font-medium relative;
+  }
+  
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-[-4px] left-0 w-0 h-[2px] bg-ev-green transition-all duration-300;
+  }
+  
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+
+  .italic-heading {
+    @apply font-inter font-light tracking-widest uppercase text-foreground/95;
+    text-shadow: 0 2px 20px hsl(0 0% 0% / 0.1);
+    letter-spacing: 0.3em;
+  }
+
+  .bottom-notch {
+    background: hsl(var(--background));
+  }
+}
+
+@layer utilities {
+  .text-shadow-subtle {
+    text-shadow: 0 2px 10px hsl(0 0% 0% / 0.1);
+  }
+}
