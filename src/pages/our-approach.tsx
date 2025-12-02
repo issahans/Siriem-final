@@ -9,7 +9,7 @@ export default function OurApproach(): JSX.Element {
     <div style={{ background: BG, color: TEXT, minHeight: "100vh" }}>
       <header style={{ padding: 40 }}>
         <h1 style={{ fontSize: 36, margin: 0 }}>Our Approach</h1>
-        <p style={{ marginTop: 8, color: "#222" }}>
+        <p style={{ marginTop: 8, color: "#fffefeff" }}>
           Pragmatic engineering, systems thinking, and operational excellence for
           end-to-end EV charging rollouts.
         </p>

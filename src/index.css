@@ -110,3 +110,16 @@
     text-shadow: 0 2px 10px hsl(0 0% 0% / 0.1);
   }
 }
+/* Add this animation for infinite moving cards */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-250px * 7));
+  }
+}
+
+.animate-scroll {
+  animation: scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite;
+}
