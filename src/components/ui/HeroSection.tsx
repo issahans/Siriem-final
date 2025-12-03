@@ -3,177 +3,117 @@ import { motion } from "framer-motion";
 
 const HeroSection = () => {
   return (
-    <section className="relative w-full min-h-screen overflow-hidden bg-black">
+    <section className="relative w-full h-screen overflow-hidden">
       
-      {/* Full-width Background Hero Image */}
+      {/* Background Image with Dark Overlay */}
       <div className="absolute inset-0 w-full h-full">
         <img 
-          src="/images/Herobanner.png" 
-          alt="EV Charging Station"
-          className="w-full h-full object-cover opacity-90"
+          src="/images/backgroundcharge.png" 
+          alt="EV Charging Background"
+          className="w-full h-full object-cover"
         />
-        {/* Subtle overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+        {/* Dark overlay to make text visible */}
+        <div className="absolute inset-0 bg-black/60" />
+        {/* Green tint overlay for brand consistency */}
+        <div className="absolute inset-0 bg-gradient-to-br from-green-900/30 via-transparent to-green-800/20" />
       </div>
-
-      {/* Navbar - Using Unified Component */}
+      
+      {/* Animated gradient orbs for depth */}
+      <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-gradient-to-br from-ev-green/20 to-transparent rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-gradient-to-tr from-ev-green/15 to-transparent rounded-full blur-3xl" />
+      
+      {/* Navbar - Using Your Existing Component */}
       <div className="relative z-50">
         <Navbar />
       </div>
 
-      {/* Hero Content - Refined Typography */}
-      <div className="relative z-10 min-h-screen pt-20 flex items-center">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 w-full">
-          <div className="max-w-2xl">
-            
-            {/* Left Side - Balanced Typography */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-              className="space-y-6"
-            >
-              {/* Main Headline - Smaller, More Refined */}
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.2 }}
-                className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight"
-              >
-                POWERING THE
-                <br />
-                <span className="text-[#00FF66]">FUTURE</span> OF
-                <br />
-                ELECTRIC MOBILITY
-              </motion.h1>
-
-              {/* Subheadline - Concise */}
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.4 }}
-                className="text-base md:text-lg text-neutral-300 leading-relaxed font-light max-w-lg"
-              >
-                Seamless AC & DC charging solutions built for reliability, scalability, and a cleaner tomorrow.
-              </motion.p>
-
-              {/* Microcopy */}
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 0.6 }}
-                className="text-xs text-neutral-400 uppercase tracking-widest font-medium"
-              >
-                Trusted by EV fleets, enterprises, and smart city operators worldwide. 
-              </motion.p>
-
-              {/* CTA Button */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.8 }}
-                className="pt-2"
-              >
-                <a
-                  href="/our-offerings"
-                  className="inline-flex items-center gap-2 px-6 py-3 border-2 border-[#00FF66] text-[#00FF66] font-semibold text-xs uppercase tracking-wider hover:bg-[#00FF66] hover:text-black transition-all duration-300 group"
-                >
-                  Start Charging Smarter
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="transform group-hover:translate-x-1 transition-transform duration-300"
-                  >
-                    <path
-                      d="M5 12H19M19 12L12 5M19 12L12 19"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </a>
-              </motion.div>
-
-              {/* Stats - Compact */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 1 }}
-                className="flex items-center gap-8 pt-8 border-t border-white/10"
-              >
-                <div>
-                  <p className="text-2xl md:text-3xl font-black text-white mb-0. 5">1000+</p>
-                  <p className="text-[10px] text-neutral-400 uppercase tracking-wider">Installations</p>
-                </div>
-                <div>
-                  <p className="text-2xl md:text-3xl font-black text-white mb-0. 5">50+</p>
-                  <p className="text-[10px] text-neutral-400 uppercase tracking-wider">Clients</p>
-                </div>
-                <div>
-                  <p className="text-2xl md:text-3xl font-black text-white mb-0. 5">99.5%</p>
-                  <p className="text-[10px] text-neutral-400 uppercase tracking-wider">Uptime</p>
-                </div>
-              </motion.div>
-            </motion.div>
-
-          </div>
-        </div>
+      {/* Background SIRIEM Text - BIGGER and WIDER */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+        <motion. h1
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="text-[35vw] md:text-[24vw] lg:text-[40vw] xl:text-[24vw] font-black tracking-wider leading-none whitespace-nowrap px-4"
+          style={{
+            background: "linear-gradient(180deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.3) 50%, rgba(0,255,102,0.4) 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            textShadow: "0 0 80px rgba(0,255,102,0.3), 0 0 40px rgba(255,255,255,0.2)",
+            filter: "drop-shadow(0 8px 60px rgba(0,255,102,0.4))",
+            letterSpacing: "0.05em"
+          }}
+        >
+          SIRIEM
+        </motion.h1>
       </div>
 
-      {/* Bottom Gradient Fade with Scroll Indicator */}
-      <div className="absolute bottom-0 left-0 right-0 z-30 pointer-events-none">
-        <div className="h-32 bg-gradient-to-b from-transparent via-white/50 to-white" />
+      {/* Content Layer */}
+      <div className="relative z-10 h-full flex items-center">
         
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-auto">
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut"
-            }}
-            className="flex flex-col items-center gap-1"
-          >
-            <div className="text-xs text-neutral-800 font-semibold uppercase tracking-wider mb-1">
-              Scroll
-            </div>
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="text-[#00FF66]"
-            >
-              <path
-                d="M12 5V19M12 19L5 12M12 19L19 12"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </motion. div>
-          
-          <motion.div
-            className="w-0.5 h-16 bg-gradient-to-b from-[#00FF66] to-transparent rounded-full"
-            animate={{
-              height: ["40px", "64px", "40px"],
-              opacity: [0.5, 1, 0.5],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
+        {/* Fast and Secure Text - MOVED UP & BIGGER */}
+        <motion.div 
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="absolute left-6 md:left-12 top-[12%] md:top-[15%] z-20"
+        >
+          <p className="text-white text-base md:text-xl lg:text-2xl font-light tracking-[0.3em] uppercase drop-shadow-lg">
+            Fast and Secure
+          </p>
+          <motion. div 
+            initial={{ width: 0 }}
+            animate={{ width: "4rem" }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mt-3 h-0.5 bg-gradient-to-r from-ev-green to-transparent"
           />
-        </div>
+        </motion. div>
+
+        {/* Center Image Area - FOREGROUND ILLUSTRATION with Animation */}
+        <motion. div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="absolute inset-0 flex items-center justify-center"
+        >
+          <img 
+            src="/images/charger.png" 
+            alt="Electric Vehicle Charging Station" 
+            className="max-h-[75vh] w-auto object-contain drop-shadow-2xl"
+          />
+        </motion.div>
+
+        {/* Right Side Description - MOVED DOWN & BIGGER */}
+        <motion.div 
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="absolute right-6 md:right-12 bottom-[5%] md:bottom-[8%] z-20 max-w-[320px] md:max-w-[450px] text-right"
+        >
+          {/* Text without background box */}
+          <p className="text-white text-base md:text-lg lg:text-xl leading-relaxed font-light drop-shadow-2xl mb-6">
+            Be part of the transformation electric vehicles 
+            via partnership for the provision of Filling 
+            Stations Public Electric Vehicles
+          </p>
+          
+          {/* Learn More Button - Keep the box style */}
+          <motion.div 
+            className="flex justify-end"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+          >
+            <button className="group relative px-8 py-4 bg-transparent backdrop-blur-sm border-2 border-ev-green text-ev-green font-semibold text-sm md:text-base uppercase tracking-wider rounded-lg hover:bg-ev-green hover:text-black transition-all duration-300 overflow-hidden shadow-lg shadow-ev-green/20">
+              {/* Animated background on hover */}
+              <span className="absolute inset-0 bg-ev-green transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+              <span className="relative z-10 flex items-center gap-2">
+                Learn More 
+                <span className="inline-block transform group-hover:translate-x-1 transition-transform duration-300">→</span>
+              </span>
+            </button>
+          </motion.div>
+        </motion.div>
+
       </div>
 
     </section>

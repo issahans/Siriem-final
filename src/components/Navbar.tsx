@@ -1,6 +1,27 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { IconMenu2, IconX, IconChevronDown } from "@tabler/icons-react";
+import { 
+  IconMenu2, 
+  IconX, 
+  IconChevronDown,
+  IconChargingPile,
+  IconDeviceDesktopAnalytics,
+  IconCpu,
+  IconPlugConnected,
+  IconTool,
+  IconHeadset,
+  IconBulb,
+  IconPackage,
+  IconTruckDelivery,
+  IconBuildingSkyscraper,
+  IconHome,
+  IconBuildingStore,
+  IconBatteryAutomotive,
+  IconSettings,
+  IconUsers,
+  IconMail,
+  IconBriefcase
+} from "@tabler/icons-react";
 import {
   motion,
   AnimatePresence,
@@ -8,538 +29,431 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
+
+// --- Configuration for Mega Menus ---
+
+const offeringsData = [
+  {
+    title: "Products",
+    description: "Hardware & Software",
+    icon: <IconChargingPile className="w-6 h-6 text-[#00FF66]" />,
+    links: [
+      { name: "AC Chargers", link: "/page/ac-chargers" },
+      { name: "DC Chargers", link: "/page/dc-chargers" },
+      { name: "CMS Platform", link: "/page/charging-management-system" },
+      { name: "Onboard Chargers", link: "/page/onboard-chargers" },
+    ]
+  },
+  {
+    title: "Services",
+    description: "Operational Excellence",
+    icon: <IconHeadset className="w-6 h-6 text-[#00FF66]" />,
+    links: [
+      { name: "Charger Services", link: "/page/charger-services" },
+      { name: "CMS Management", link: "/page/cms-services" },
+      { name: "Consulting", link: "/page/consulting" },
+    ]
+  },
+  {
+    title: "Our Solutions",
+    description: "End-to-End Packages",
+    icon: <IconPackage className="w-6 h-6 text-[#00FF66]" />,
+    link: "/page/solutions", 
+    isSpecial: true
+  }
+];
+
+const verticalsData = [
+  {
+    title: "Commercial",
+    icon: <IconBuildingSkyscraper className="w-5 h-5" />,
+    items: [
+      { name: "Fleets", link: "/verticals/fleets", desc: "Depot & en-route charging" },
+      { name: "Workplace", link: "/verticals/workplace", desc: "Employee charging programs" },
+      { name: "Retail & Hospitality", link: "/verticals/retail-hospitality", desc: "Customer experience" },
+    ]
+  },
+  {
+    title: "Infrastructure",
+    icon: <IconPlugConnected className="w-5 h-5" />,
+    items: [
+      { name: "CPOs", link: "/verticals/cpos", desc: "Network operators" },
+      { name: "Residential", link: "/verticals/residential", desc: "Multi-unit dwellings" },
+      { name: "Energy Storage", link: "/verticals/energy-storage", desc: "Grid balancing" },
+    ]
+  },
+  {
+    title: "Partnerships",
+    icon: <IconSettings className="w-5 h-5" />,
+    items: [
+      { name: "EV OEMs", link: "/page/evoems", desc: "Vehicle integration" },
+      { name: "EVSE OEMs", link: "/page/evseoems", desc: "Hardware certification" },
+    ]
+  }
+];
+
+const companyData = [
+  { name: "About Us", link: "/page/about-us", icon: <IconBulb className="w-5 h-5" />, desc: "Our mission & vision" },
+  { name: "Team", link: "/page/team", icon: <IconUsers className="w-5 h-5" />, desc: "Meet the experts" },
+  { name: "Careers", link: "/page/careers", icon: <IconBriefcase className="w-5 h-5" />, desc: "Join SIRIEM" },
+  { name: "Contact", link: "/page/contact-us", icon: <IconMail className="w-5 h-5" />, desc: "Get in touch" },
+];
 
 const Navbar = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollY } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const [visible, setVisible] = useState<boolean>(false);
+  const { scrollY } = useScroll();
+  const [scrolled, setScrolled] = useState(false);
+  
+  const [activeTab, setActiveTab] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [offeringsOpen, setOfferingsOpen] = useState(false);
-  const [verticalsOpen, setVerticalsOpen] = useState(false);
-  const [innovationOpen, setInnovationOpen] = useState(false);
-  const [companyOpen, setCompanyOpen] = useState(false);
 
-  // Mobile dropdown states
+  // Mobile sub-menus
   const [mobileOfferingsOpen, setMobileOfferingsOpen] = useState(false);
   const [mobileVerticalsOpen, setMobileVerticalsOpen] = useState(false);
-  const [mobileInnovationOpen, setMobileInnovationOpen] = useState(false);
   const [mobileCompanyOpen, setMobileCompanyOpen] = useState(false);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 100) {
-      setVisible(true);
-    } else {
-      setVisible(false);
-    }
+    setScrolled(latest > 50);
   });
-
-  const offeringsItems = [
-    {
-      category: "Products",
-      items: [
-        { name: "AC Chargers", link: "/page/ac-chargers" },
-        { name: "DC Chargers", link: "/page/dc-chargers" },
-        { name: "Charging Management System", link: "/page/charging-management-system" },
-        { name: "Onboard Chargers", link: "/page/onboard-chargers" },
-      ],
-    },
-    {
-      category: "Services",
-      items: [
-        { name: "Charger Services", link: "/page/charger-services" },
-        { name: "Charging Management Services", link: "/page/charging-management-services" },
-        { name: "Consulting", link: "/page/consulting" },
-      ],
-    },
-    {
-      category: "Solutions",
-      items: [
-        { name: "View All Solutions", link: "/our-offerings" },
-      ],
-    },
-  ];
-
-  const verticalsItems = [
-    { name: "Fleets", link: "/page/fleets" },
-    { name: "Workplace", link: "/page/workplace" },
-    { name: "Residential", link: "/page/residential" },
-    { name: "CPOs", link: "/page/cpos" },
-    { name: "Retail and Hospitality", link: "/page/retail-hospitality" },
-    {
-      name: "OEMs",
-      submenu: [
-        { name: "EV OEMs", link: "/page/ev-oems" },
-        { name: "EVSE OEMs", link: "/page/evse-oems" },
-      ],
-    },
-    { name: "Energy Storage", link: "/page/energy-storage" },
-  ];
-
-  const innovationItems = [
-    { name: "Tech Speak", link: "/page/tech-speak" },
-    { name: "Upcoming Releases", link: "/page/upcoming-releases" },
-  ];
-
-  const companyItems = [
-    { name: "About Us", link: "/page/about-us" },
-    { name: "Team", link: "/page/team" },
-    { name: "Contact Us", link: "/page/contact-us" },
-    { name: "Careers", link: "/page/careers" },
-  ];
-
-  const navItems = [
-    { name: "Home", link: "/" },
-    { name: "Our Offerings", link: "#", hasDropdown: true, dropdown: "offerings" },
-    { name: "Verticals", link: "#", hasDropdown: true, dropdown: "verticals" },
-    { name: "Innovation", link: "#", hasDropdown: true, dropdown: "innovation" },
-    { name: "Company", link: "#", hasDropdown: true, dropdown: "company" },
-  ];
 
   return (
     <motion.div
       ref={ref}
-      className="fixed inset-x-0 top-0 z-50 w-full"
+      className="fixed inset-x-0 top-0 z-[100] w-full flex justify-center pt-4"
     >
-      {/* Desktop Navbar */}
-      <motion.div
+      {/* --- DESKTOP NAVBAR --- */}
+      <motion.nav
+        initial={{ y: 0, width: "95%" }}
         animate={{
-          backdropFilter: visible ? "blur(16px)" : "blur(0px)",
-          backgroundColor: visible ? "rgba(255, 255, 255, 0.8)" : "rgba(0, 0, 0, 0)",
-          borderRadius: visible ? "9999px" : "0px",
-          width: visible ? "70%" : "100%",
-          y: visible ? 20 : 0,
-          paddingLeft: visible ? "24px" : "48px",
-          paddingRight: visible ? "24px" : "48px",
-          boxShadow: visible ? "0 4px 24px rgba(0, 0, 0, 0.1)" : "none",
+          width: scrolled ? "70%" : "95%",
+          y: scrolled ? 10 : 0,
+          backgroundColor: scrolled ? "rgba(255, 255, 255, 0.9)" : "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(12px)",
+          boxShadow: scrolled ? "0 10px 30px rgba(0,0,0,0.1)" : "0 0 0 rgba(0,0,0,0)",
         }}
-        transition={{
-          type: "spring",
-          stiffness: 200,
-          damping: 30,
-        }}
-        className="relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start px-12 py-4 lg:flex"
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="hidden lg:flex items-center justify-between px-8 py-3 rounded-full border border-white/20 relative"
       >
         {/* Logo */}
-        <a href="/" className="relative z-20 flex items-center space-x-2">
-          <img
-            src="/lovable-uploads/4e67d66f-c0e8-4f31-8fcf-d0611ede8aaa.png"
-            alt="SIRIEM Logo"
-            className="h-8 w-auto"
-          />
+        <a href="/" className="flex items-center gap-2 z-50">
+          <img src="/images/logo-1.png" alt="SIRIEM" className="h-8 w-auto" />
         </a>
 
-        {/* Nav Items */}
-        <div className="flex flex-1 flex-row items-center justify-center space-x-1">
-          {navItems.map((item, idx) => (
-            <div key={`desktop-link-${idx}`} className="relative">
-              {item.hasDropdown ? (
-                <div
-                  className="relative"
-                  onMouseEnter={() => {
-                    if (item.dropdown === "offerings") setOfferingsOpen(true);
-                    if (item.dropdown === "verticals") setVerticalsOpen(true);
-                    if (item. dropdown === "innovation") setInnovationOpen(true);
-                    if (item.dropdown === "company") setCompanyOpen(true);
-                  }}
-                  onMouseLeave={() => {
-                    if (item.dropdown === "offerings") setOfferingsOpen(false);
-                    if (item.dropdown === "verticals") setVerticalsOpen(false);
-                    if (item. dropdown === "innovation") setInnovationOpen(false);
-                    if (item.dropdown === "company") setCompanyOpen(false);
-                  }}
-                >
-                  <motion.button
-                    animate={{
-                      color: visible ?  "#000000" : "#FFFFFF",
-                    }}
-                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium hover:text-[#00FF66] transition-colors duration-200 whitespace-nowrap"
-                  >
-                    {item.name}
-                    <IconChevronDown className="h-4 w-4" />
-                  </motion.button>
-
-                  {/* Our Offerings Dropdown */}
-                  {item.dropdown === "offerings" && (
-                    <AnimatePresence>
-                      {offeringsOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          className="absolute top-full left-0 mt-2 w-80 bg-white backdrop-blur-xl rounded-lg shadow-xl border border-neutral-200 overflow-hidden"
-                        >
-                          {offeringsItems.map((category, cidx) => (
-                            <div key={`category-${cidx}`} className="border-b border-neutral-100 last:border-b-0">
-                              <div className="px-4 py-2 bg-neutral-50 text-xs font-semibold text-neutral-600 uppercase tracking-wider">
-                                {category.category}
-                              </div>
-                              {category.items.map((product, pidx) => (
-                                <a
-                                  key={`product-${pidx}`}
-                                  href={product.link}
-                                  className="block px-4 py-3 text-sm text-black hover:bg-[#00FF66]/20 hover:text-[#00FF66] transition-colors duration-200"
-                                >
-                                  {product.name}
-                                </a>
-                              ))}
-                            </div>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  )}
-
-                  {/* Verticals Dropdown */}
-                  {item.dropdown === "verticals" && (
-                    <AnimatePresence>
-                      {verticalsOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          className="absolute top-full left-0 mt-2 w-64 bg-white backdrop-blur-xl rounded-lg shadow-xl border border-neutral-200 overflow-hidden"
-                        >
-                          {verticalsItems.map((vertical, vidx) => (
-                            <div key={`vertical-${vidx}`}>
-                              {vertical.submenu ?  (
-                                <div className="group relative">
-                                  <div className="px-4 py-3 text-sm text-black hover:bg-[#00FF66]/20 hover:text-[#00FF66] transition-colors duration-200 cursor-pointer flex items-center justify-between">
-                                    {vertical.name}
-                                    <IconChevronDown className="h-4 w-4 -rotate-90" />
-                                  </div>
-                                  <div className="hidden group-hover:block absolute left-full top-0 ml-2 w-48 bg-white backdrop-blur-xl rounded-lg shadow-xl border border-neutral-200 overflow-hidden">
-                                    {vertical.submenu.map((sub, sidx) => (
-                                      <a
-                                        key={`sub-${sidx}`}
-                                        href={sub.link}
-                                        className="block px-4 py-3 text-sm text-black hover:bg-[#00FF66]/20 hover:text-[#00FF66] transition-colors duration-200"
-                                      >
-                                        {sub.name}
-                                      </a>
-                                    ))}
-                                  </div>
-                                </div>
-                              ) : (
-                                <a
-                                  href={vertical.link}
-                                  className="block px-4 py-3 text-sm text-black hover:bg-[#00FF66]/20 hover:text-[#00FF66] transition-colors duration-200"
-                                >
-                                  {vertical.name}
-                                </a>
-                              )}
-                            </div>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  )}
-
-                  {/* Innovation Dropdown */}
-                  {item.dropdown === "innovation" && (
-                    <AnimatePresence>
-                      {innovationOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          className="absolute top-full left-0 mt-2 w-56 bg-white backdrop-blur-xl rounded-lg shadow-xl border border-neutral-200 overflow-hidden"
-                        >
-                          {innovationItems.map((innovation, iidx) => (
-                            <a
-                              key={`innovation-${iidx}`}
-                              href={innovation.link}
-                              className="block px-4 py-3 text-sm text-black hover:bg-[#00FF66]/20 hover:text-[#00FF66] transition-colors duration-200"
-                            >
-                              {innovation.name}
-                            </a>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  )}
-
-                  {/* Company Dropdown */}
-                  {item. dropdown === "company" && (
-                    <AnimatePresence>
-                      {companyOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          className="absolute top-full left-0 mt-2 w-56 bg-white backdrop-blur-xl rounded-lg shadow-xl border border-neutral-200 overflow-hidden"
-                        >
-                          {companyItems.map((company, cidx) => (
-                            <a
-                              key={`company-${cidx}`}
-                              href={company.link}
-                              className="block px-4 py-3 text-sm text-black hover:bg-[#00FF66]/20 hover:text-[#00FF66] transition-colors duration-200"
-                            >
-                              {company.name}
-                            </a>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  )}
+        {/* Navigation Links */}
+        <div className="flex items-center gap-1">
+          <NavLink name="Home" link="/" />
+          
+          {/* OUR OFFERINGS */}
+          <NavDropdown 
+            name="Our Offerings" 
+            id="offerings" 
+            activeTab={activeTab} 
+            setActiveTab={setActiveTab}
+          >
+            <div className="grid grid-cols-3 gap-6 p-6 w-[800px]">
+              {/* Product Column */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-[#00FF66]/10 rounded-lg">{offeringsData[0].icon}</div>
+                  <div>
+                    <h4 className="font-bold text-black">{offeringsData[0].title}</h4>
+                    <p className="text-xs text-neutral-500">{offeringsData[0].description}</p>
+                  </div>
                 </div>
-              ) : (
-                <motion.a
-                  href={item.link}
-                  animate={{
-                    color: visible ?  "#000000" : "#FFFFFF",
-                  }}
-                  className="px-3 py-2 text-sm font-medium hover:text-[#00FF66] transition-colors duration-200"
-                >
-                  {item.name}
-                </motion. a>
-              )}
+                <div className="space-y-1">
+                  {offeringsData[0].links.map((item, idx) => (
+                    <a 
+                      key={idx} 
+                      href={item.link} 
+                      className="block px-3 py-2 text-sm text-neutral-600 rounded-md transition-colors hover:bg-[#00FF66] hover:text-white"
+                    >
+                      {item.name}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* Services Column */}
+              <div className="space-y-4 border-l border-neutral-100 pl-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-[#00FF66]/10 rounded-lg">{offeringsData[1].icon}</div>
+                  <div>
+                    <h4 className="font-bold text-black">{offeringsData[1].title}</h4>
+                    <p className="text-xs text-neutral-500">{offeringsData[1].description}</p>
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  {offeringsData[1].links.map((item, idx) => (
+                    <a 
+                      key={idx} 
+                      href={item.link} 
+                      className="block px-3 py-2 text-sm text-neutral-600 rounded-md transition-colors hover:bg-[#00FF66] hover:text-white"
+                    >
+                      {item.name}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* Solutions Column */}
+              <a href={offeringsData[2].link} className="group relative flex flex-col justify-end p-6 rounded-2xl bg-neutral-900 overflow-hidden text-white no-underline">
+                <div className="absolute inset-0 bg-[#00FF66] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=400&q=80')] bg-cover bg-center opacity-40 group-hover:opacity-20 transition-opacity" />
+                <div className="relative z-10">
+                  <div className="mb-2 p-2 bg-white/10 w-fit rounded-lg backdrop-blur-sm group-hover:bg-black/10 group-hover:text-black transition-colors">
+                    <IconPackage className="w-6 h-6" />
+                  </div>
+                  <h4 className="font-bold text-lg group-hover:text-black transition-colors">Explore Solutions</h4>
+                  <p className="text-xs text-neutral-300 group-hover:text-black/70 transition-colors mt-1">
+                    Pre-configured stacks for Fleets, CPOs and Residential.
+                  </p>
+                </div>
+              </a>
             </div>
-          ))}
+          </NavDropdown>
+
+          {/* VERTICALS */}
+          <NavDropdown 
+            name="Verticals" 
+            id="verticals" 
+            activeTab={activeTab} 
+            setActiveTab={setActiveTab}
+          >
+            <div className="grid grid-cols-3 gap-6 p-6 w-[850px]">
+              {verticalsData.map((category, idx) => (
+                <div key={idx} className="space-y-4">
+                  <div className="flex items-center gap-2 text-[#00FF66] font-bold text-sm uppercase tracking-wider">
+                    {category.icon}
+                    {category.title}
+                  </div>
+                  <div className="grid gap-2">
+                    {category.items.map((item, i) => (
+                      <a 
+                        key={i} 
+                        href={item.link} 
+                        className="group flex items-start gap-3 p-3 rounded-xl transition-all border border-transparent hover:bg-[#00FF66]"
+                      >
+                        <div className="mt-1 w-1.5 h-1.5 rounded-full bg-neutral-300 group-hover:bg-white transition-colors" />
+                        <div>
+                          <div className="text-sm font-semibold text-neutral-800 group-hover:text-white transition-colors">{item.name}</div>
+                          <div className="text-xs text-neutral-500 mt-0.5 group-hover:text-white/90 transition-colors">{item.desc}</div>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </NavDropdown>
+
+          {/* COMPANY */}
+          <NavDropdown 
+            name="Company" 
+            id="company" 
+            activeTab={activeTab} 
+            setActiveTab={setActiveTab}
+          >
+            <div className="grid grid-cols-2 gap-4 p-4 w-[500px]">
+              {companyData.map((item, idx) => (
+                <a 
+                  key={idx} 
+                  href={item.link}
+                  className="flex items-center gap-4 p-4 rounded-xl transition-all group border border-transparent hover:bg-[#00FF66]"
+                >
+                  <div className="p-3 bg-neutral-100 rounded-lg text-neutral-600 group-hover:bg-white group-hover:text-[#00FF66] transition-colors">
+                    {item.icon}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm text-neutral-800 group-hover:text-white transition-colors">{item.name}</h4>
+                    <p className="text-xs text-neutral-500 mt-0.5 group-hover:text-white/90 transition-colors">{item.desc}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </NavDropdown>
         </div>
 
         {/* CTA Button */}
         <a
           href="/page/contact-us"
-          className="px-6 py-2 bg-[#00FF66] text-black text-sm font-semibold rounded-full hover:bg-[#00FF66]/90 transition-all duration-200 whitespace-nowrap"
+          className="group relative px-6 py-2.5 bg-[#00FF66] text-black text-sm font-bold rounded-full overflow-hidden transition-all duration-300 hover:shadow-lg hover:ring-2 hover:ring-black hover:ring-offset-2 border-2 border-transparent hover:border-black"
         >
-          Talk to Our Expert →
+          <span className="relative z-10 group-hover:text-white transition-colors duration-300">
+            Talk to Our Expert
+          </span>
+          <div className="absolute inset-0 bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
         </a>
-      </motion.div>
+      </motion.nav>
 
-      {/* Mobile Navbar */}
-      <motion.div
-        animate={{
-          backdropFilter: visible ? "blur(16px)" : "blur(0px)",
-          backgroundColor: visible ? "rgba(255, 255, 255, 0.8)" : "rgba(0, 0, 0, 0)",
-          borderRadius: visible ? "16px" : "0px",
-          width: visible ? "90%" : "100%",
-          y: visible ? 20 : 0,
-          paddingLeft: visible ? "16px" : "24px",
-          paddingRight: visible ? "16px" : "24px",
-          boxShadow: visible ? "0 4px 24px rgba(0, 0, 0, 0.1)" : "none",
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 200,
-          damping: 30,
-        }}
-        className="relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between px-6 py-4 lg:hidden"
-      >
-        <div className="flex w-full flex-row items-center justify-between">
-          {/* Logo */}
-          <a href="/" className="relative z-20 flex items-center">
-            <img
-              src="/lovable-uploads/4e67d66f-c0e8-4f31-8fcf-d0611ede8aaa.png"
-              alt="SIRIEM Logo"
-              className="h-8 w-auto"
-            />
+      {/* --- MOBILE NAVBAR (unchanged layout, same data) --- */}
+      <div className="lg:hidden w-full px-4">
+        <div className="flex items-center justify-between bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl shadow-lg border border-neutral-100">
+          <a href="/" className="flex items-center gap-2">
+            <img src="/images/logo-1.png" alt="SIRIEM" className="h-7 w-auto" />
           </a>
-
-          {/* Mobile Menu Toggle */}
-          <motion.button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            animate={{
-              color: visible ? "#000000" : "#FFFFFF",
-            }}
-            className="z-20"
-          >
-            {mobileMenuOpen ? <IconX className="h-6 w-6" /> : <IconMenu2 className="h-6 w-6" />}
-          </motion.button>
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <IconX className="w-6 h-6" /> : <IconMenu2 className="w-6 h-6" />}
+          </button>
         </div>
 
-        {/* Mobile Menu */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="w-full flex flex-col items-start gap-3 pt-4 mt-4 border-t border-neutral-300 max-h-[70vh] overflow-y-auto"
+              initial={{ opacity: 0, y: -20, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: "auto" }}
+              exit={{ opacity: 0, y: -20, height: 0 }}
+              className="mt-2 bg-white rounded-2xl shadow-xl overflow-hidden border border-neutral-100"
             >
-              {/* Home */}
-              <a
-                href="/"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-black hover:text-[#00FF66] transition-colors duration-200 text-base font-medium"
-              >
-                Home
-              </a>
-
-              {/* Our Offerings */}
-              <div className="w-full">
-                <button
-                  onClick={() => setMobileOfferingsOpen(! mobileOfferingsOpen)}
-                  className="flex items-center justify-between w-full text-black hover:text-[#00FF66] transition-colors duration-200 text-base font-medium"
-                >
-                  Our Offerings
-                  <IconChevronDown
-                    className={`h-4 w-4 transition-transform duration-200 ${mobileOfferingsOpen ? "rotate-180" : ""}`}
-                  />
-                </button>
-                <AnimatePresence>
+              <div className="p-4 flex flex-col gap-2 max-h-[70vh] overflow-y-auto">
+                <a href="/" className="p-3 font-bold text-lg hover:bg-neutral-50 rounded-xl">Home</a>
+                
+                {/* Mobile Offerings */}
+                <div className="border-t border-neutral-100 pt-2">
+                  <button 
+                    onClick={() => setMobileOfferingsOpen(!mobileOfferingsOpen)}
+                    className="w-full flex items-center justify-between p-3 font-bold text-lg hover:bg-neutral-50 rounded-xl"
+                  >
+                    Our Offerings <IconChevronDown className={`w-5 h-5 transition ${mobileOfferingsOpen ? "rotate-180" : ""}`} />
+                  </button>
                   {mobileOfferingsOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="flex flex-col gap-2 mt-2 ml-4"
-                    >
-                      {offeringsItems.map((category, cidx) => (
-                        <div key={`mobile-category-${cidx}`}>
-                          <div className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1">
-                            {category.category}
+                    <div className="pl-4 pb-2 space-y-4">
+                      {offeringsData.map((group, i) => (
+                        <div key={i}>
+                          <div className="text-xs font-bold text-[#00FF66] uppercase mb-2">{group.title}</div>
+                          <div className="space-y-2 border-l-2 border-neutral-100 pl-3">
+                            {group.links?.map((link, j) => (
+                              <a key={j} href={link.link} className="block text-sm text-neutral-600 py-1 hover:text-[#00FF66]">{link.name}</a>
+                            ))}
+                            {group.link && (
+                              <a href={group.link} className="block text-sm font-bold text-black py-1">View Solutions →</a>
+                            )}
                           </div>
-                          {category.items.map((item, iidx) => (
-                            <a
-                              key={`mobile-item-${iidx}`}
-                              href={item.link}
-                              onClick={() => setMobileMenuOpen(false)}
-                              className="block text-neutral-600 hover:text-[#00FF66] transition-colors duration-200 text-sm py-1"
-                            >
-                              {item.name}
-                            </a>
-                          ))}
                         </div>
                       ))}
-                    </motion.div>
+                    </div>
                   )}
-                </AnimatePresence>
-              </div>
+                </div>
 
-              {/* Verticals */}
-              <div className="w-full">
-                <button
-                  onClick={() => setMobileVerticalsOpen(!mobileVerticalsOpen)}
-                  className="flex items-center justify-between w-full text-black hover:text-[#00FF66] transition-colors duration-200 text-base font-medium"
-                >
-                  Verticals
-                  <IconChevronDown
-                    className={`h-4 w-4 transition-transform duration-200 ${mobileVerticalsOpen ? "rotate-180" : ""}`}
-                  />
-                </button>
-                <AnimatePresence>
+                {/* Mobile Verticals */}
+                <div className="border-t border-neutral-100 pt-2">
+                  <button 
+                    onClick={() => setMobileVerticalsOpen(!mobileVerticalsOpen)}
+                    className="w-full flex items-center justify-between p-3 font-bold text-lg hover:bg-neutral-50 rounded-xl"
+                  >
+                    Verticals <IconChevronDown className={`w-5 h-5 transition ${mobileVerticalsOpen ? "rotate-180" : ""}`} />
+                  </button>
                   {mobileVerticalsOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="flex flex-col gap-2 mt-2 ml-4"
-                    >
-                      {verticalsItems.map((vertical, vidx) => (
-                        <div key={`mobile-vertical-${vidx}`}>
-                          {vertical.submenu ? (
-                            <div>
-                              <div className="text-neutral-600 text-sm font-medium mb-1">{vertical.name}</div>
-                              {vertical.submenu.map((sub, sidx) => (
-                                <a
-                                  key={`mobile-sub-${sidx}`}
-                                  href={sub.link}
-                                  onClick={() => setMobileMenuOpen(false)}
-                                  className="block text-neutral-500 hover:text-[#00FF66] transition-colors duration-200 text-sm py-1 ml-3"
-                                >
-                                  {sub.name}
-                                </a>
-                              ))}
-                            </div>
-                          ) : (
-                            <a
-                              href={vertical.link}
-                              onClick={() => setMobileMenuOpen(false)}
-                              className="block text-neutral-600 hover:text-[#00FF66] transition-colors duration-200 text-sm"
-                            >
-                              {vertical.name}
-                            </a>
-                          )}
-                        </div>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Innovation */}
-              <div className="w-full">
-                <button
-                  onClick={() => setMobileInnovationOpen(!mobileInnovationOpen)}
-                  className="flex items-center justify-between w-full text-black hover:text-[#00FF66] transition-colors duration-200 text-base font-medium"
-                >
-                  Innovation
-                  <IconChevronDown
-                    className={`h-4 w-4 transition-transform duration-200 ${mobileInnovationOpen ? "rotate-180" : ""}`}
-                  />
-                </button>
-                <AnimatePresence>
-                  {mobileInnovationOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="flex flex-col gap-2 mt-2 ml-4"
-                    >
-                      {innovationItems.map((innovation, iidx) => (
-                        <a
-                          key={`mobile-innovation-${iidx}`}
-                          href={innovation.link}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block text-neutral-600 hover:text-[#00FF66] transition-colors duration-200 text-sm"
-                        >
-                          {innovation.name}
+                    <div className="pl-4 pb-2 grid gap-2">
+                      {verticalsData.flatMap(g => g.items).map((item, i) => (
+                        <a key={i} href={item.link} className="block text-sm text-neutral-600 py-2 border-b border-neutral-50 last:border-0 hover:text-[#00FF66]">
+                          {item.name}
                         </a>
                       ))}
-                    </motion.div>
+                    </div>
                   )}
-                </AnimatePresence>
-              </div>
+                </div>
 
-              {/* Company */}
-              <div className="w-full">
-                <button
-                  onClick={() => setMobileCompanyOpen(!mobileCompanyOpen)}
-                  className="flex items-center justify-between w-full text-black hover:text-[#00FF66] transition-colors duration-200 text-base font-medium"
-                >
-                  Company
-                  <IconChevronDown
-                    className={`h-4 w-4 transition-transform duration-200 ${mobileCompanyOpen ? "rotate-180" : ""}`}
-                  />
-                </button>
-                <AnimatePresence>
+                {/* Mobile Company */}
+                <div className="border-t border-neutral-100 pt-2">
+                  <button 
+                    onClick={() => setMobileCompanyOpen(!mobileCompanyOpen)}
+                    className="w-full flex items-center justify-between p-3 font-bold text-lg hover:bg-neutral-50 rounded-xl"
+                  >
+                    Company <IconChevronDown className={`w-5 h-5 transition ${mobileCompanyOpen ? "rotate-180" : ""}`} />
+                  </button>
                   {mobileCompanyOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="flex flex-col gap-2 mt-2 ml-4"
-                    >
-                      {companyItems.map((company, cidx) => (
-                        <a
-                          key={`mobile-company-${cidx}`}
-                          href={company.link}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block text-neutral-600 hover:text-[#00FF66] transition-colors duration-200 text-sm"
-                        >
-                          {company.name}
+                    <div className="pl-4 pb-2 grid gap-2">
+                      {companyData.map((item, i) => (
+                        <a key={i} href={item.link} className="block text-sm text-neutral-600 py-2 hover:text-[#00FF66]">
+                          {item.name}
                         </a>
                       ))}
-                    </motion.div>
+                    </div>
                   )}
-                </AnimatePresence>
-              </div>
+                </div>
 
-              <a
-                href="/page/contact-us"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full px-6 py-3 bg-[#00FF66] text-black text-sm font-semibold rounded-full hover:bg-[#00FF66]/90 transition-all duration-200 text-center mt-2"
-              >
-                Talk to Our Expert →
-              </a>
+                <a 
+                  href="/page/contact-us"
+                  className="mt-4 w-full py-4 bg-black text-white text-center font-bold rounded-xl"
+                >
+                  Talk to Our Expert
+                </a>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
-      </motion. div>
+      </div>
     </motion.div>
+  );
+};
+
+// --- Sub-components for Clean Code ---
+
+const NavLink = ({ name, link }: { name: string; link: string }) => (
+  <a
+    href={link}
+    // CHANGED: Black text by default, Green Background + Black Text on Hover
+    className="relative px-4 py-2 text-sm font-semibold text-neutral-800 transition-all rounded-full hover:bg-[#00FF66] hover:text-black"
+  >
+    {name}
+  </a>
+);
+
+const NavDropdown = ({ 
+  name, 
+  id, 
+  children, 
+  activeTab, 
+  setActiveTab 
+}: { 
+  name: string; 
+  id: string; 
+  children: React.ReactNode; 
+  activeTab: string | null; 
+  setActiveTab: (val: string | null) => void;
+}) => {
+  const isOpen = activeTab === id;
+
+  return (
+    <div 
+      className="relative"
+      onMouseEnter={() => setActiveTab(id)}
+      onMouseLeave={() => setActiveTab(null)}
+    >
+      <button 
+        // CHANGED: 
+        // Default: Neutral Text
+        // Hover: Green Background, Black Text
+        // Open: Green Background, Black Text (to indicate active state)
+        className={cn(
+          "flex items-center gap-1 px-4 py-2 text-sm font-semibold transition-all rounded-full",
+          isOpen ? "bg-[#00FF66] text-black" : "text-neutral-800 hover:bg-[#00FF66] hover:text-black"
+        )}
+      >
+        {name}
+        <IconChevronDown className={cn("w-4 h-4 transition-transform duration-200", isOpen && "rotate-180")} />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 15, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 15, scale: 0.98 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-full left-1/2 -translate-x-1/2 pt-4"
+          >
+            {/* White Card Container */}
+            <div className="bg-white rounded-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.15)] border border-neutral-100 overflow-hidden relative">
+              {/* Top accent line */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00FF66] via-emerald-400 to-[#00FF66]" />
+              {children}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 
